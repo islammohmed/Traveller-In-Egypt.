@@ -25,7 +25,7 @@ const addUser = catchError(async(req,res,next)=>{
     user && res.send({msg:'success',user})
 })
 const getUsers = catchError(async(req,res,next)=>{
-    let apiFeaturee = new ApiFeature(userModel.find(),req.query).pagenation().sort().filter().search('name','email')
+    let apiFeaturee = new ApiFeature(userModel.find(),req.query).pagenation().sort().filter().search('firstname','lastName','email')
     const users = await apiFeaturee.mongoseQuery
     !users && next (new AppError('can not find users',404))
     users && res.send({msg:'success',page:apiFeaturee.pageNumber,users})
