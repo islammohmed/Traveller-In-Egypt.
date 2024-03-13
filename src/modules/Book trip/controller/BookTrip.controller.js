@@ -37,6 +37,8 @@ const getSpcificReserved = catchError(async (req, res, next) => {
 })
 
 const createCheckOutSession = async (req, res, next) => {
+    let trip = await tripModel.findById(req.params.id)
+    if(!trip) return next(new AppError('trip not founded',404))
     let user = await userModel.findById(req.user._id)
     if(!user) next (new AppError('user not founded',401))
     let totalPrice = user.bookeDetails[0].totalPrice
