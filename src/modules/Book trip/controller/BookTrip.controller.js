@@ -67,7 +67,7 @@ const reservePlace = catchError((request, response) => {
     const sig = request.headers['stripe-signature'].toString();
 
     let event;
-    event = stripe.webhooks.constructEvent(request.body, sig, "whsec_5RTQ4zCeaVhRPn65NTzpYxfAZ91FGyuH");
+    event = stripe.webhooks.constructEvent(request.body, sig, "whsec_bPFV8r8Y4lisWmtrkhH68eREbidIsDjj");
     if (event.type == "checkout.session.completed") {
         bookedTrip(event.data.object, response)
         console.log("create Order here...");
