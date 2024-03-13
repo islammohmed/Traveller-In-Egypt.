@@ -30,6 +30,7 @@ const schema = new mongoose.Schema({
     },
     rateCount: {
         type: Number,
+        default:0
     },
     email: {
         type: String,
