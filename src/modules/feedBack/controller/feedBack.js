@@ -8,6 +8,20 @@ const addFeedback = catchError(async (req, res, next) => {
     if (!company) return next(new AppError('company not Founded', 404))
     let isfeedbackExist = await feedBackModel.findOne({ user: req.user._id, company: req.body.company })
     if (isfeedbackExist) return next(new AppError('you are created feedback Before', 404))
+    company.rateCount += 1;
+    if (company.rateCount !== 0) {
+        if (company.rateCount === 1) {
+            // If it's the first rating, set rateAvg to the new rating directly
+            company.rateAvg = req.body.rate;
+        } else {
+            // Update rateAvg based on the existing average and the new rating
+            company.rateAvg = (company.rateAvg * (company.rateCount - 1) + req.body.rate) / company.rateCount;
+        }
+        await company.save();
+    } else {
+        console.error("rateCount should not be zero");
+    }
+
     req.body.user = req.user._id
     const feedback = new feedBackModel(req.body)
     await feedback.save()
