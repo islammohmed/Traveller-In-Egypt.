@@ -9,7 +9,6 @@ import { createCheckOutSession, getReservedForUser, getSpcificReserved, getallRe
 
 bookTripRouter
 .route('/')
-// .post(protectedRouter,allowedTo('user'),uploadsingleFile('photo'),validation(addtourismTypeValidation),addTourismType)
 .get(protectedRouter,allowedTo('user'),getReservedForUser)
 .get(protectedRouter,allowedTo('owner'),getallReserves)
 
@@ -19,7 +18,5 @@ bookTripRouter
 .post(protectedRouter,allowedTo('user'),validation(bookValidation),tripDetails)
 .get(protectedRouter,allowedTo('user','owner','admin'),validation(paramValidation),getSpcificReserved)
 bookTripRouter.post('/checkout/:id',protectedRouter,allowedTo('user'),validation(paramValidation),createCheckOutSession)
-// .put(protectedRouter,uploadsingleFile('photo'),validation(updatetourismTypeValidation),updateTourismType)
-// .delete(protectedRouter,validation(paramValidation),allowedTo('admin'),deleteTourismType)
 
 export default bookTripRouter

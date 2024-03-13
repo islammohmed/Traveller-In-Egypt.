@@ -36,19 +36,19 @@ const getSpcificReserved = catchError(async (req, res, next) => {
     res.send({ msg: 'success', Reserve })
 })
 
-const createCheckOutSession = catchError(async (req, res, next) => {
+const createCheckOutSession = async (req, res, next) => {
     let user = await userModel.findById(req.user._id)
-    let trip = await tripModel.findById(req.params.id)
+    if(!user) next (new AppError('user not founded',401))
+    let totalPrice = user.bookeDetails[0].totalPrice
     if (!user.bookeDetails) return next(new AppError('please select trip', 404))
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {
                 price_data: {
                     currency: 'egp',
-                    unit_amount: user.bookeDetails.totalPrice * 100,
-                    trip_data: {
-                        name: user.name,
-                        trip: trip.title
+                    unit_amount: totalPrice * 100,
+                    product_data: {
+                        name: `${user.firstName} ${user.lastName}`
                     }
                 },
                 quantity: 1,
@@ -57,13 +57,13 @@ const createCheckOutSession = catchError(async (req, res, next) => {
         mode: 'payment',
         success_url: 'https://www.linkedin.com/in/islammuhaamed/',
         cancel_url: 'https://www.linkedin.com/in/islammuhaamed/',
-        customer_email: req.user.email,
+        customer_email: user.email,
         client_reference_id: req.params.id
     });
     res.send({ msg: "success", session })
-})
+}
 
-const createOnlineOrder = catchError((request, response) => {
+const reservePlace = catchError((request, response) => {
     const sig = request.headers['stripe-signature'].toString();
 
     let event;
@@ -84,7 +84,7 @@ export {
     getSpcificReserved,
     createCheckOutSession,
     getReservedForUser,
-    createOnlineOrder
+    reservePlace
 }
 
 async function bookedTrip(e, res) {

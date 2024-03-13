@@ -7,15 +7,15 @@ import { bootstrab } from './src/modules/index.routes.js'
 import { config } from 'dotenv'
 import { globalError } from './src/middleware/globalError.js'
 import { AppError } from './src/utils/AppError.js'
+import { reservePlace } from './src/modules/Book trip/controller/BookTrip.controller.js'
 config()
-cors()
+app.use(cors())
 dbConnection()
+app.post('/webhook', express.raw({ type: 'application/json' }),reservePlace)
 app.use(express.json())
 app.use('/uploads',express.static('uploads'))
 bootstrab(app)
-app.use('/',(req,res,next)=>{
-    res.send('welcome to our project')
-})
+
 app.use('*',(req,res,next)=>{
     next(new AppError('Url Not Founded',404))
 })
