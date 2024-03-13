@@ -63,7 +63,7 @@ const createCheckOutSession = async (req, res, next) => {
     res.send({ msg: "success", session })
 }
 
-const reservePlace = catchError((request, response) => {
+const reservePlace = (request, response) => {
     const sig = request.headers['stripe-signature'].toString();
 
     let event;
@@ -76,7 +76,7 @@ const reservePlace = catchError((request, response) => {
 
     }
 
-})
+}
 
 export {
     tripDetails,
