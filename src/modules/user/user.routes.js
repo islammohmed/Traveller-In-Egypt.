@@ -10,7 +10,7 @@ import {protectedRouter} from './../auth/controller/auth.js'
 import {checkEmail} from './../../middleware/checkEmail.js'
 userRouter
 .route('/') 
-.post(uploadsingleFile('photo'),protectedRouter,validation(addUserValidation),allowedTo('admin'),checkEmail, addUser)
+.post(uploadsingleFile('image'),protectedRouter,validation(addUserValidation),allowedTo('admin'),checkEmail, addUser)
 .get(protectedRouter,allowedTo('admin'),getUsers)
 
 
@@ -20,5 +20,5 @@ userRouter
 .route('/:id')
 .get(protectedRouter,validation(paramValidation),allowedTo('admin'),getSingleUser)
 .delete(protectedRouter,validation(paramValidation),allowedTo('admin'),deleteUser)
-.put(uploadsingleFile('photo'),protectedRouter,validation(updateUserValidation),allowedTo('admin','user','owner'),checkEmail, updateUser)
+.put(uploadsingleFile('image'),protectedRouter,validation(updateUserValidation),allowedTo('admin','user','owner'),checkEmail, updateUser)
 export default userRouter

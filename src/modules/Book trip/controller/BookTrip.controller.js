@@ -26,7 +26,7 @@ const getallReserves = catchError(async (req, res, next) => {
     res.send({ msg: 'success', Reserves })
 })
 const getReservedForUser = catchError(async (req, res, next) => {
-    let Reserve = await reservedModel.findOne({ user: req.user._id }).populate('trip')
+    let Reserve = await reservedModel.find({ user: req.user._id }).populate('trip')
     if (!Reserve) return next(new AppError('order not founded', 404))
     res.send({ msg: 'success', Reserve })
 })
@@ -99,6 +99,7 @@ async function bookedTrip(e, res) {
 
         let reserve = new reservedModel({
             user: user._id,
+            trip:trip._id,
             totalprice: e.amount_total / 100,
             isPaid: true,
             paidAt: Date.now()

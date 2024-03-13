@@ -6,8 +6,7 @@ const schema = new mongoose.Schema({
     number:Number,
     totalprice: Number,
     isPiad:{
-        type:Boolean,
-        default:false
+        type:Boolean
     },
     paidAt:Date,
 }, { timestamps: true })

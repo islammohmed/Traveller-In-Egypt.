@@ -17,7 +17,7 @@ app.use(express.json())
 app.use('/uploads', express.static('uploads'))
 bootstrab(app)
 app.use('*', (req, res, next) => {
-    next(new AppError('Wekcome to our Site , Url Not Founded', 404))
+    next(new AppError('Welcome to our Site , Url Not Founded', 404))
 })
 app.use(globalError)
 app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`))
