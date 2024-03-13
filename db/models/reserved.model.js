@@ -11,4 +11,7 @@ const schema = new mongoose.Schema({
     paidAt:Date,
 }, { timestamps: true })
 
+schema.pre(/^find/, function () {
+    this.populate('user', 'name')
+})
 export const reservedModel = mongoose.model('reserved', schema)

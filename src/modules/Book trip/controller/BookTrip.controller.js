@@ -108,7 +108,7 @@ async function bookedTrip(e, res) {
         await reserve.save();
         let quantity = trip.quantity - 1;
         let booked = trip.booked + 1;
-        await tripModel.findByIdAndUpdate(e.client_reference_id, { quantity, booked });
+        await tripModel.findByIdAndUpdate(e.client_reference_id, { quantity:quantity, booked:booked });
 
         // Sending response after successful database operations
         res.send({ msg: 'success', reserve });
