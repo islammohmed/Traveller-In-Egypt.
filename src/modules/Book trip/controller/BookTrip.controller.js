@@ -90,7 +90,7 @@ export {
 async function bookedTrip(e, res) {
     try {
         let trip = await tripModel.findById(e.client_reference_id);
-        if (!trip) throw new AppError('trip not found', 404);
+        if (!trip) throw new AppError('Trip not found', 404);
 
         let user = await userModel.findOne({ email: e.customer_email });
         if (!user) throw new AppError('User not found', 404);
@@ -103,14 +103,17 @@ async function bookedTrip(e, res) {
         });
 
         await reserve.save();
-        let quantity = trip.quantity - 1
-        let booked = trip.booked + 1
-        await tripModel.findByIdAndUpdate(e.client_reference_id, { quantity, booked })
+        let quantity = trip.quantity - 1;
+        let booked = trip.booked + 1;
+        await tripModel.findByIdAndUpdate(e.client_reference_id, { quantity, booked });
 
+        // Sending response after successful database operations
         res.send({ msg: 'success', reserve });
     } catch (error) {
+        // Handling errors within the function
         console.error('Error processing checkout:', error);
-        throw error;
+        // Sending appropriate error response if necessary
+        res.status(error.statusCode || 500).send({ error: error.message });
     }
 }
 
