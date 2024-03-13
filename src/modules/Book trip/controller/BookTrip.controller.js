@@ -88,6 +88,7 @@ export {
 }
 
 async function bookedTrip(e, res) {
+    try {
         let trip = await tripModel.findById(e.client_reference_id);
         if (!trip) throw new AppError('trip not found', 404);
 
@@ -107,6 +108,10 @@ async function bookedTrip(e, res) {
         await tripModel.findByIdAndUpdate(e.client_reference_id, { quantity, booked })
 
         res.send({ msg: 'success', reserve });
+    } catch (error) {
+        console.error('Error processing checkout:', error);
+        throw error;
+    }
 }
 
 
