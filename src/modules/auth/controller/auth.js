@@ -27,7 +27,6 @@ const signUp = catchError(async (req, res, next) => {
     sendEmail(Code, req.body.email)
     !user && next(new AppError('invalid data', 404))
     user && res.send({ msg: 'success', token })
-    res.send({ msg: 'success', token })
 })
 
 const signIn = catchError(async (req, res, next) => {
