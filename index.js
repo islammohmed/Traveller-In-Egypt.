@@ -8,9 +8,10 @@ import { config } from 'dotenv'
 import { globalError } from './src/middleware/globalError.js'
 import { AppError } from './src/utils/AppError.js'
 import { reservePlace } from './src/modules/Book trip/controller/BookTrip.controller.js'
-import { userModel } from './db/models/user.model.js'
+import { startChatServer } from './src/modules/chat/Socket.js'
 config()
-app.use(cors())
+// modify cors
+app.use(cors({allowedHeaders:"*",origin:'*',credentials:false,methods:'*'}))
 dbConnection()
 app.post('/webhook', express.raw({ type: 'application/json' }), reservePlace)
 app.use(express.json())
@@ -20,9 +21,13 @@ app.use('*', (req, res, next) => {
     next(new AppError('Welcome to our Site , Url Not Founded', 404))
 })
 app.use(globalError)
-app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`))
-
+export const server = app.listen((process.env.PORT || port),
+    () => {
+        console.log(`Example app listening on port ${port}!`);
+        startChatServer();
+    })
 
 process.on('unhandledRejection', (err) => {
     console.log('unhandledRejection', err);
 })
+
