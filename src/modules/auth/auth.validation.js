@@ -23,7 +23,7 @@ const paramValidation = Joi.object({
 })
 
 const signInValidation = Joi.object({
-    email: Joi.string().email(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
 })
 
