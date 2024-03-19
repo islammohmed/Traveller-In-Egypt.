@@ -13,13 +13,13 @@ const signUp = catchError(async (req, res, next) => {
             folder: 'Traveller/users/images',
         });
         req.body.image = imageResult.url
-      //  req.body.image = 'example-temp-url'
+      // req.body.image = 'example-temp-url'
     }else{
         const imageResult = await cloudinaryConfig().uploader.upload('https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0', {
                 folder: 'Traveller/users/images',
             });
             req.body.image = imageResult.url
-            //req.body.image = 'example-temp-url'
+           // req.body.image = 'example-temp-url'
     } 
    let Code = nanoid(6);
    req.body.verifyCode = Code

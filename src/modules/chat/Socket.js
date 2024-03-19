@@ -87,7 +87,7 @@ export const startChatServer = () => {
                         else {
                             setMessageSender(message, true);
                             io.to(socket.id).emit('message', message)
-                            setMessageSender(message, true);
+                            setMessageSender(message, false);
                             io.to(receiverSocketId).emit('message', message)
                         }
 

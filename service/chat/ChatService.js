@@ -73,8 +73,11 @@ const GetUserChats = errorWrapper(
             const otherUser = await userModel.findById(otherUserId);
             const otherUserRole = otherUser.role;
             otherUserId = (otherUserRole == 'admin') ? 'admin' : otherUserId;
-
-            const result = { lastMessage: chat.lastMessage, email: otherUser.email, otherUserId: otherUserId, chatId: chats[i].id };
+            const isOnline = (otherUser.isActive || otherUserId == 'admin') ? true : false;
+            const result = {
+                lastMessage: chat.lastMessage, email: otherUser.email, otherUserId: otherUserId, chatId: chats[i].id
+                , isOnline: isOnline
+            };
 
             results.push(result);
         }

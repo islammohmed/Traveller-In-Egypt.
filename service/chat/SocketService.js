@@ -3,7 +3,7 @@ const onlineUsers = new Map();
 const onlineSockets = new Map();
 const onlineUsersRoles = new Map();
 
-import  {userModel} from '../../db/models/user.model.js'
+import { userModel } from '../../db/models/user.model.js'
 
 const errorWrapper = (asyncFun) => {
     return async (...args) => {
@@ -19,7 +19,7 @@ const errorWrapper = (asyncFun) => {
 
 const AddOnlineUser = errorWrapper(
     async (socketId, userId) => {
-        const user = await userModel.findById(userId);
+        const user = await userModel.findByIdAndUpdate(userId, { isActive: true }, { new: true });
         onlineUsersRoles.set(userId, user.role);
         onlineUsers.set(socketId, userId);
         onlineSockets.set(userId, socketId);
@@ -27,8 +27,10 @@ const AddOnlineUser = errorWrapper(
 )
 const RemoveOnlineUser = errorWrapper(
     async (socketId) => {
-        onlineSockets.delete(onlineUsers.get(socketId))
-        onlineUsersRoles.delete(onlineUsers.get(socketId))
+        const userId = onlineUsers.get(socketId);
+        await userModel.findByIdAndUpdate(userId, { isActive: false });
+        onlineSockets.delete(userId)
+        onlineUsersRoles.delete(userId)
         onlineUsers.delete(socketId);
     }
 )
