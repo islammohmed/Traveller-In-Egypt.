@@ -8,17 +8,17 @@ import { nanoid } from 'nanoid'
 import { cloudinaryConfig } from "../../../utils/cloudinaryConfig.js"
 
 const signUp = catchError(async (req, res, next) => {
-    if (req.file){
+    if (req.file) {
         const imageResult = await cloudinaryConfig().uploader.upload(req.file.path, {
             folder: 'Traveller/users/images',
         });
         req.body.image = imageResult.url
-    }else{
+    } else {
         const imageResult = await cloudinaryConfig().uploader.upload('https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0', {
             folder: 'Traveller/users/images',
         });
         req.body.image = imageResult.url
-    } 
+    }
     let Code = nanoid(6);
     req.body.verifyCode = Code
     const user = new userModel(req.body)
@@ -88,7 +88,7 @@ const checkCode = catchError(async (req, res, next) => {
     let { email, code } = req.body
     let verify = await userModel.findOne({ email: email, resetCode: code })
     if (!verify) return next(new AppError('code invalid', 401))
-    res.send({ msg: 'success'})
+    res.send({ msg: 'success' })
 })
 
 const resetPassword = catchError(async (req, res, next) => {
@@ -111,5 +111,5 @@ export {
 
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWYxYjY1MDBhZmQ3OThlNmYzYzRiNGYiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDM0MDA4M30.pz46A9t5-Kb0K7nq3MVcFbyBgYs7yxuqZmjejZ-FV2Q admin
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWVlZjBjNjk1ZTgyYzM5NDQxMTgzNTciLCJyb2xlIjoib3duZXIiLCJpYXQiOjE3MTAzNDE5OTB9.yXq-5XOAOr2aPD89_M6TXwD2BeQCQkveocgvMPJ7fws owner
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWZjZDEzZmEwOWFiNjEwZjFkYTYxZTYiLCJyb2xlIjoib3duZXIiLCJpYXQiOjE3MTEwNjc1MDR9.uWy1cYqdmrwsxa_nr--ajvU9cw50sBK0HFC79SbcvBc owner
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWYxYzY3ZmNhNTM5N2ExZTExMmZkMmQiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDM0MzgwN30.5P2M4QSBmmzyslS_dr33d9jqipRJsPTebp8mOgKnh8U user

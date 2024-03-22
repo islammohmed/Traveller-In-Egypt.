@@ -16,6 +16,7 @@ const addUserValidation = Joi.object({
         path: Joi.string().required(),
         size: Joi.number().max(5242880)
     }).optional(),
+    role:Joi.string().valid('user','admin','owner').optional()
 })
 const paramValidation = Joi.object({
     id: Joi.string().hex().length(24).required()

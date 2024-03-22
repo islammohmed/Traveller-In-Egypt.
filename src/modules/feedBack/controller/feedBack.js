@@ -29,7 +29,7 @@ const addFeedback = catchError(async (req, res, next) => {
     feedback && res.send({ msg: 'success', feedback })
 })
 const getFeedbacks = catchError(async (req, res, next) => {
-    const feedback = await feedBackModel.findOne({ company: req.body.company })
+    const feedback = await feedBackModel.findOne({ company: req.body.company }) 
     !feedback && next(new AppError('No feedback', 404))
     feedback && res.send({ msg: 'success', feedback })
 })

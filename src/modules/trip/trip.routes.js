@@ -23,7 +23,7 @@ tripRouter
         { name: 'image', maxCount: 1 },
         { name: 'images', maxCount: 10 }
     ]), validation(updateTripVal), updateTrip)
-    .delete(protectedRouter, validation(paramVal), deleteTrip)
+    .delete(protectedRouter, validation(paramVal), allowedTo('owner'),deleteTrip)
 
 tripRouter
     .get('/trips/:id', validation(paramVal), getTripsForCompany)

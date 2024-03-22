@@ -5,8 +5,6 @@ import { tripModel } from '../../../../db/models/trip.model.js'
 import { ApiFeature } from '../../../utils/ApiFeature.js'
 import { companyModel } from '../../../../db/models/company.model.js'
 import { cloudinaryConfig } from '../../../utils/cloudinaryConfig.js'
-
-
 const addTrip = catchError(async (req, res, next) => {
     let company = await companyModel.findOne({ owner: req.user._id })
     if (!company) return next(new AppError('no company for u add company please', 404))
@@ -37,13 +35,13 @@ const addTrip = catchError(async (req, res, next) => {
     trips && res.send({ msg: 'success', trips })
 })
 const getTrips = catchError(async (req, res, next) => {
-    let apiFeaturee = new ApiFeature(tripModel.find({}), req.query).pagenation().sort().filter().search('title', 'description')
+    let apiFeaturee = new ApiFeature(tripModel.find({}).populate('tourismType', 'name ').populate('company', 'name -_id'), req.query).pagenation().sort().filter().search('title', 'description')
     const trips = await apiFeaturee.mongoseQuery
     !trips && next(new AppError('can not find trips', 404))
     trips && res.send({ msg: 'success', page: apiFeaturee.pageNumber, trips })
 })
 const getSingleTrip = catchError(async (req, res, next) => {
-    const Trips = await tripModel.findById(req.params.id)
+    const Trips = await tripModel.findById(req.params.id).populate('tourismType', 'name').populate('company', 'name -_id')
     !Trips && next(new AppError('type not find', 404))
     Trips && res.send({ msg: 'success', Trips })
 })

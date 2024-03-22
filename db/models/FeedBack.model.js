@@ -27,7 +27,7 @@ const schema = mongoose.Schema({
     { timestamps: true })
 
 schema.pre(/^find/, function () {
-    this.populate('user', 'name')
+    this.populate('user', 'firstName lastName -_id')
 })
 
 export const feedBackModel = mongoose.model('feedBack', schema)

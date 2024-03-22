@@ -29,6 +29,7 @@ const addTripVal = Joi.object({
     tripStatus: Joi.string().valid('Avaliable', 'Canceled', 'Fineshed').optional(),
     quantity: Joi.number().min(0).required(),
     price: Joi.number().min(0).required(),
+    tourismType:Joi.string().hex().length(24).required()
 })
 const paramVal = Joi.object({
     id: Joi.string().hex().length(24).required()
@@ -55,6 +56,7 @@ const updateTripVal = Joi.object({
     tripStatus: Joi.string().valid('Avaliable', 'Canceled', 'Fineshed').optional(),
     quantity: Joi.number().min(0).optional(),
     price: Joi.number().min(0).optional(),
+    tourismType:Joi.string().hex().length(24).optional()
 })
 
 export {
