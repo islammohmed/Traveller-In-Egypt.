@@ -13,6 +13,7 @@ const signUp = catchError(async (req, res, next) => {
             folder: 'Traveller/users/images',
         });
         req.body.image = imageResult.url
+<<<<<<< HEAD
     } else {
         const imageResult = await cloudinaryConfig().uploader.upload('https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0', {
             folder: 'Traveller/users/images',
@@ -21,10 +22,22 @@ const signUp = catchError(async (req, res, next) => {
     }
     let Code = nanoid(6);
     req.body.verifyCode = Code
+=======
+      // req.body.image = 'example-temp-url'
+    }else{
+        const imageResult = await cloudinaryConfig().uploader.upload('https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0', {
+                folder: 'Traveller/users/images',
+            });
+            req.body.image = imageResult.url
+           // req.body.image = 'example-temp-url'
+    } 
+   let Code = nanoid(6);
+   req.body.verifyCode = Code
+>>>>>>> a6ea8ab4227929a575e5a0dcc210940ea66ccf26
     const user = new userModel(req.body)
     await user.save()
     let token = jwt.sign({ userId: user._id, role: user.role }, process.env.SECRET_KEY)
-    sendEmail(Code, req.body.email)
+   sendEmail(Code, req.body.email)
     !user && next(new AppError('invalid data', 404))
     user && res.send({ msg: 'success', token })
 })

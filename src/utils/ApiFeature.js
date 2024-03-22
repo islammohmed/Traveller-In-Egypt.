@@ -7,7 +7,7 @@ export class ApiFeature {
     }
 
     pagenation() {
-        let limit = 5
+        let limit = 5   
         if (this.searchQuery.page <= 0) this.searchQuery.page = 1
         let pageNumber = this.searchQuery.page * 1 || 1
         let skip = (pageNumber - 1) * limit

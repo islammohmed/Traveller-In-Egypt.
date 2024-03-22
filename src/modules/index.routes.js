@@ -6,7 +6,7 @@ import feedbackRouter from "./feedBack/feedback.routes.js"
 import tourismTypeRouter from "./tourismType/tourismType.routes.js"
 import tripRouter from "./trip/trip.routes.js"
 import userRouter from "./user/user.routes.js"
-
+import {server} from '../../index.js' ;
 
 export const bootstrab = (app) => {
     app.use('/api/v1/tourismType', tourismTypeRouter)
@@ -18,6 +18,7 @@ export const bootstrab = (app) => {
     app.use('/api/v1/favourites', favouritesRouter)
     app.use('/api/v1/bookTrip', bookTripRouter)
 }
+
 
 
 
