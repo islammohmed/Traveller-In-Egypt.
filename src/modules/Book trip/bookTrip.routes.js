@@ -6,18 +6,19 @@ import { protectedRouter } from '../auth/controller/auth.js'
 import { allowedTo } from '../../middleware/allowedTo.js'
 import { bookValidation, paramValidation } from "./bookTrip.validation.js";
 import { createCheckOutSession, getReservedForUser, getSpcificReserved, getallReserves, tripDetails } from "./controller/BookTrip.controller.js";
+import { isVerify } from "../../middleware/isVerify.js";
 
 bookTripRouter
     .route('/')
-    .get(protectedRouter, allowedTo('user'), getReservedForUser)
+    .get(protectedRouter,isVerify, allowedTo('user'), getReservedForUser)
 
 bookTripRouter.get('/onwer/allReserves',protectedRouter, allowedTo('owner'), getallReserves)
 
 
 bookTripRouter
     .route('/:id')
-    .post(protectedRouter, allowedTo('user'), validation(bookValidation), tripDetails)
+    .post(protectedRouter,isVerify, allowedTo('user'), validation(bookValidation), tripDetails)
     .get(protectedRouter, allowedTo('user', 'owner', 'admin'), validation(paramValidation), getSpcificReserved)
-bookTripRouter.post('/checkout/:id', protectedRouter, allowedTo('user'), validation(paramValidation), createCheckOutSession)
+bookTripRouter.post('/checkout/:id', isVerify,protectedRouter, allowedTo('user'), validation(paramValidation), createCheckOutSession)
 
 export default bookTripRouter

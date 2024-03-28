@@ -10,14 +10,14 @@ import { protectedRouter } from "../auth/controller/auth.js";
 
 companyRouter
     .route('/')
-    .post(protectedRouter, uploadsingleFile('image'), validation(addCompanyVal), allowedTo('admin', 'owner'), addCompany)
+    .post(protectedRouter, uploadsingleFile('image'), validation(addCompanyVal), allowedTo('owner'), addCompany)
     .get(getCompanies)
 
 companyRouter
     .route('/:id')
     .get(validation(paramValidation), getSingleCompany)
-    .put(protectedRouter, uploadsingleFile('image'), allowedTo('admin', 'owner'), validation(updateCompanyVal), updateCompany)
-    .delete(protectedRouter, allowedTo('admin'), validation(paramValidation), deleteCompany)
+    .put(protectedRouter, uploadsingleFile('image'), allowedTo('owner'), validation(updateCompanyVal), updateCompany)
+    .delete(protectedRouter, allowedTo('admin','owner'), validation(paramValidation), deleteCompany)
 
 
 export default companyRouter

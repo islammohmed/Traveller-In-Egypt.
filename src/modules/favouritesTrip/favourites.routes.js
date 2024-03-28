@@ -5,13 +5,14 @@ import {validation} from '../../middleware/validation.js'
 import {allowedTo} from '../../middleware/allowedTo.js' 
 import {addFavouritesVal, paramValidation} from './favourites.validation.js'
 import { addTofavourites, getfavourites, removeFromFavourites } from "./controller/favourits.js";
+import { isVerify } from "../../middleware/isVerify.js";
 favouritesRouter
 .route('/')
-.post(protectedRouter,allowedTo('user'),validation(addFavouritesVal),addTofavourites)
-.get(protectedRouter,allowedTo('user'),getfavourites)
+.post(protectedRouter,isVerify,allowedTo('user'),validation(addFavouritesVal),addTofavourites)
+.get(protectedRouter,isVerify,allowedTo('user'),getfavourites)
 favouritesRouter
 .route('/:id')
-.delete(protectedRouter,allowedTo('user'),validation(paramValidation),removeFromFavourites)
+.delete(protectedRouter,isVerify,allowedTo('user'),validation(paramValidation),removeFromFavourites)
 
 
 export default favouritesRouter

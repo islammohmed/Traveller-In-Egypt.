@@ -24,7 +24,7 @@ const signUp = catchError(async (req, res, next) => {
     const user = new userModel(req.body)
     await user.save()
     let token = jwt.sign({ userId: user._id, role: user.role }, process.env.SECRET_KEY)
-   sendEmail(Code, req.body.email)
+    sendEmail(Code, req.body.email)
     !user && next(new AppError('invalid data', 404))
     user && res.send({ msg: 'success', token })
 })
@@ -74,6 +74,7 @@ const isVerify = catchError(async (req, res, next) => {
     res.send({ msg: 'success' })
 })
 
+
 const forgetPassword = catchError(async (req, res, next) => {
     let { email } = req.body
     let user = await userModel.findOne({ email })
@@ -111,5 +112,5 @@ export {
 
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWYxYjY1MDBhZmQ3OThlNmYzYzRiNGYiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDM0MDA4M30.pz46A9t5-Kb0K7nq3MVcFbyBgYs7yxuqZmjejZ-FV2Q admin
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWZjZDEzZmEwOWFiNjEwZjFkYTYxZTYiLCJyb2xlIjoib3duZXIiLCJpYXQiOjE3MTEwNjc1MDR9.uWy1cYqdmrwsxa_nr--ajvU9cw50sBK0HFC79SbcvBc owner
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWY1YWU0ZjdjNjIwMGViYzY2MzA4Y2YiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMTEwOTQxOX0.k_COpHsYY5_EbzEJgt1c22WEbFJVyJMoVJVFZ3g51Bc owner
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWYxYzY3ZmNhNTM5N2ExZTExMmZkMmQiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMDM0MzgwN30.5P2M4QSBmmzyslS_dr33d9jqipRJsPTebp8mOgKnh8U user
