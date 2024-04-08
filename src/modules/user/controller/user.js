@@ -12,7 +12,6 @@ const addUser = catchError(async (req, res, next) => {
         });
         req.body.image = imageResult.url
     } else {
-        console.log('kk');
         const imageResult = await cloudinaryConfig().uploader.upload('https://th.bing.com/th/id/R.a6e328f484dfaee5cff22431f5c61cab?rik=QtxCe0VZ6bQvjQ&pid=ImgRaw&r=0', {
             folder: 'Traveller/users/images',
         });
@@ -36,8 +35,10 @@ const getSingleUser = catchError(async (req, res, next) => {
     user && res.send({ msg: 'success', user })
 })
 const updateUser = catchError(async (req, res, next) => {
-    if (req.file) {
-        let publicId = userModel.image.split('/').pop().split('.')[0]
+    let user = await userModel.findById(req.params.id);
+    console.log(user);
+    if (req.file && user && user.image) {
+        let publicId = user.image.split('/').pop().split('.')[0];
         await cloudinaryConfig().uploader.destroy(publicId, (err, result) => {
             if (err) {
                 console.error(err);
@@ -48,12 +49,16 @@ const updateUser = catchError(async (req, res, next) => {
         const imageResult = await cloudinaryConfig().uploader.upload(req.file.path, {
             folder: 'Traveller/users/images',
         });
-        req.body.image = imageResult.url
+        req.body.image = imageResult.url;
     }
-    const user = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    !user && next(new AppError('type not find', 404))
-    user && res.send({ msg: 'success', user })
-})
+    const updatedUser = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!user) {
+        next(new AppError('User not found', 404));
+    } else {
+        res.send({ msg: 'Success', updatedUser });
+    }
+});
+
 const deleteUser = catchError(async (req, res, next) => {
     const user = await userModel.findById(req.params.id)
     !user && next(new AppError('user not founded', 404))

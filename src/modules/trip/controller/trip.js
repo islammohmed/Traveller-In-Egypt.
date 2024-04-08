@@ -52,28 +52,43 @@ const getTripsForCompany = catchError(async (req, res, next) => {
     trips && res.send({ msg: 'success', page: apiFeaturee.pageNumber, trips })
 })
 const updateTrip = catchError(async (req, res, next) => {
-    let owner = await tripModel.findOne({ _id: req.params.id, owner: req.user._id })
-    if (!owner) next(new AppError('you are not owner for this trip', 401))
-    if (req.body.name) req.body.slug = slugify(req.body.name)
+    let trip = await tripModel.findOne({ _id: req.params.id, owner: req.user._id });
+    if (!trip) {
+        next(new AppError('You are not the owner of this trip', 401));
+        return;
+    }
+
+    if (req.body.name) {
+        req.body.slug = slugify(req.body.name);
+    }
+
     if (req.file) {
-        let publicId = trip.image.split('/').pop().split('.')[0]
-        await cloudinaryConfig().uploader.destroy(publicId, (err, result) => {
-            if (err) {
-                console.error(err);
-            } else {
-                console.log(result);
-            }
-        });
+        if (trip.image) {
+            let publicId = trip.image.split('/').pop().split('.')[0];
+            await cloudinaryConfig().uploader.destroy(publicId, (err, result) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log(result);
+                }
+            });
+        }
 
         let image = await cloudinaryConfig().uploader.upload(req.file.path, {
             folder: 'Traveller/trip/image'
-        })
-        req.body.image = image.url
+        });
+        req.body.image = image.url;
     }
-    const trip = await tripModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    !trip && next(new AppError('trip not find', 404))
-    trip && res.send({ msg: 'success', trip })
-})
+
+    const updatedTrip = await tripModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedTrip) {
+        next(new AppError('Trip not found', 404));
+    } else {
+        res.send({ msg: 'Success', updatedTrip });
+    }
+});
+
+
 
 const deleteTrip = catchError(async (req, res, next) => {
     let owner = await tripModel.findOne({ _id: req.params.id, owner: req.user._id })
