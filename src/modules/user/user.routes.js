@@ -19,7 +19,7 @@ userRouter
 
 userRouter
 .route('/:id')
-.get(protectedRouter,isVerify,validation(paramValidation),allowedTo('admin','user'),getSingleUser)
+.get(protectedRouter,isVerify,validation(paramValidation),allowedTo('admin','user','owner'),getSingleUser)
 .delete(protectedRouter,validation(paramValidation),allowedTo('admin'),deleteUser)
 .put(uploadsingleFile('image'),protectedRouter,validation(updateUserValidation),allowedTo('admin','user','owner'),checkEmail, updateUser)
 export default userRouter
