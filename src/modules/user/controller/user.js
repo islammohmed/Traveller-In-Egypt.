@@ -32,7 +32,7 @@ const getUsers = catchError(async (req, res, next) => {
 const getSingleUser = catchError(async (req, res, next) => {
     const user = await userModel.findById(req.params.id)
     !user && next(new AppError('user not find', 404))
-    user && res.send({ msg: 'success', user })
+    user && res.send({ msg: 'success', firstName: user.firstName, lastName: user.lastName, email: user.email,phone: user.phone,bookeDetails: user.bookeDetails,image: user.image})
 })
 const updateUser = catchError(async (req, res, next) => {
     let user = await userModel.findById(req.params.id);
