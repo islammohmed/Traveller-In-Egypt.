@@ -34,7 +34,7 @@ const signIn = catchError(async (req, res, next) => {
     let checkEmail = await userModel.findOne({ email })
     if (!checkEmail) return next(new AppError('email incorrect', 401))
     let checkPassword = bcrypt.compareSync(password, checkEmail.password)
-    if (!checkPassword) return next(new AppError('passwor incorrect', 401))
+    if (!checkPassword) return next(new AppError('password incorrect', 401))
     let token = jwt.sign({ userId: checkEmail._id, role: checkEmail.role }, process.env.SECRET_KEY)
     res.send({ msg: 'success', token })
 })
