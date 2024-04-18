@@ -48,10 +48,10 @@ export class ApiFeature {
 
     search(...params) {
         if (this.searchQuery.keyword) {
-            let searchUser = params.map((param) => { param: { $regex: this.searchQuery.keyword } })
+            let searchele = params.map((param) => { param: { $regex: this.searchQuery.keyword } })
             this.mongoseQuery.find({
                 $or: [
-                    ...searchUser
+                    ...searchele
                 ]
             })
 
