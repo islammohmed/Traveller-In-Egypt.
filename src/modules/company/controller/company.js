@@ -18,9 +18,8 @@ const addCompany = catchError(async (req, res, next) => {
     companies && res.send({ msg: 'success', companies })
 })
 const getCompanies = catchError(async (req, res, next) => {
-    let apiFeaturee = new ApiFeature(companyModel.find(), req.query).pagenation().sort().filter().search()
-    const companies = await apiFeaturee.mongoseQuery
-    companies && res.send({ msg: 'success', page: apiFeaturee.pageNumber, companies })
+    let companies = await companyModel.find()
+    res.send({ msg: 'success', companies })
 })
 const getSingleCompany = catchError(async (req, res, next) => {
     const Companys = await companyModel.findById(req.params.id)
