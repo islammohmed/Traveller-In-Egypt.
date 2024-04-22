@@ -19,6 +19,6 @@ bookTripRouter
     .route('/:id')
     .post(protectedRouter,isVerify, allowedTo('user'), validation(bookValidation), tripDetails)
     .get(protectedRouter, allowedTo('user', 'owner', 'admin'), validation(paramValidation), getSpcificReserved)
-bookTripRouter.post('/checkout/:id', isVerify,protectedRouter, allowedTo('user'), validation(paramValidation), createCheckOutSession)
+bookTripRouter.post('/checkout/:id', protectedRouter , isVerify , allowedTo('user'), validation(paramValidation), createCheckOutSession)
 
 export default bookTripRouter

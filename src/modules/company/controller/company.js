@@ -29,7 +29,7 @@ const getSingleCompany = catchError(async (req, res, next) => {
 
 const updateCompany = catchError(async (req, res, next) => {
     let company = await companyModel.findById(req.params.id)
-    !company && next(new AppError('type not find', 404))
+    !company && next(new AppError('company not founded!', 404))
     if (req.file) {
         let publicId = company.image.split('/').pop().split('.')[0]
         await cloudinaryConfig().uploader.destroy(publicId, (err, result) => {

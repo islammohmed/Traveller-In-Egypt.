@@ -36,7 +36,8 @@ const getSpcificReserved = catchError(async (req, res, next) => {
     res.send({ msg: 'success', Reserve })
 })
 
-const createCheckOutSession = async (req, res, next) => {
+const createCheckOutSession = catchError(async (req, res, next) => {
+    console.log('ayy');
     let trip = await tripModel.findById(req.params.id)
     if(!trip) return next(new AppError('trip not founded',404))
     let user = await userModel.findById(req.user._id)
@@ -63,7 +64,7 @@ const createCheckOutSession = async (req, res, next) => {
         client_reference_id: req.params.id
     });
     res.send({ msg: "success", session })
-}
+})
 
 const reservePlace = (request, response) => {
     const sig = request.headers['stripe-signature'].toString();
