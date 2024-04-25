@@ -15,9 +15,9 @@ const errorWrapper = (asyncFun) => {
     }
 }
 const syncErrorWrapper = (Fun) => {
-    return  (...args) => {
+    return (...args) => {
         try {
-            return  Fun(...args)
+            return Fun(...args)
         }
         catch (error) {
             console.log(error);
@@ -39,7 +39,7 @@ const CreateMessage = errorWrapper(
         const result = await message.save();
         await UpdateLastMessageDate(chatId);
         // console.log('result', result)
-        
+
         return result;
     }
 )
@@ -48,7 +48,17 @@ const GetChatMessages = errorWrapper(
     async (userId, userRole, chatId, pageNum) => {
         const authorized = await checkUserChatOwnerShip(userId, chatId);
         if (!authorized) { return null };
-        let messages = await Message.find({ chatId: chatId }).sort({ date: -1 }).skip(--pageNum).limit(pageNum * 10);
+
+        pageNum = pageNum <= 0 ? 1 : pageNum;
+        const limit = 10;
+        let messages =
+            await Message
+                .find({ chatId: chatId })
+                .sort({ timeStamp: -1 })
+                .skip(((pageNum - 1) * limit))
+                .limit(limit)
+
+
         messages = messages.map((m) => {
             return specifyMessageSender(m, userId, userRole);
         })
@@ -67,13 +77,13 @@ const specifyMessageSender = syncErrorWrapper(
 
 )
 
-const setMessageSender = syncErrorWrapper (
-    function (message,sentByMe){
+const setMessageSender = syncErrorWrapper(
+    function (message, sentByMe) {
         message._doc.sentByMe = sentByMe;
     }
 )
 
-export { CreateMessage, GetChatMessages ,specifyMessageSender,setMessageSender};
+export { CreateMessage, GetChatMessages, specifyMessageSender, setMessageSender };
 
 
 
