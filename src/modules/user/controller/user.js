@@ -17,7 +17,7 @@ const addUser = catchError(async (req, res, next) => {
         });
         req.body.image = imageResult.url
     }
-    req.body.isVerify = true
+    req.body.isverify = true
     const user = new userModel(req.body)
     await user.save()
     !user && next(new AppError('user not founded', 404))
