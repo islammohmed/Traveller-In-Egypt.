@@ -44,10 +44,10 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    favTrips: {
+    favTrips: [{
         type: mongoose.Types.ObjectId,
         ref: 'trip'
-    },
+    }],
     role: {
         type: String,
         enum: ['user', 'admin', 'owner'],
