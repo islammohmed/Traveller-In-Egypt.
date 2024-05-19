@@ -34,23 +34,29 @@ const addTrip = catchError(async (req, res, next) => {
     !trips && next(new AppError('invalid data', 404))
     trips && res.send({ msg: 'success', trips })
 })
+
 const getTrips = catchError(async (req, res, next) => {
-    let apiFeaturee = new ApiFeature(tripModel.find({}).populate('tourismType', 'name ').populate('company', 'name -_id'), req.query).pagenation().sort().filter().search('title', 'description')
+    let apiFeaturee = new ApiFeature
+    (tripModel.find({}).populate('tourismType', 'name ')
+    .populate('company', 'name _id'), req.query).pagenation().sort().filter().search('title', 'description')
     const trips = await apiFeaturee.mongoseQuery
     !trips && next(new AppError('can not find trips', 404))
     trips && res.send({ msg: 'success', page: apiFeaturee.pageNumber, trips })
 })
+
 const getSingleTrip = catchError(async (req, res, next) => {
-    const Trips = await tripModel.findById(req.params.id).populate('tourismType', 'name').populate('company', 'name -_id')
+    const Trips = await tripModel.findById(req.params.id).populate('tourismType', 'name').populate('company', 'name _id')
     !Trips && next(new AppError('type not find', 404))
     Trips && res.send({ msg: 'success', Trips })
 })
+
 const getTripsForCompany = catchError(async (req, res, next) => {
     let apiFeaturee = new ApiFeature(tripModel.find({ company: req.params.id }), req.query).pagenation().sort().filter().search()
     const trips = await apiFeaturee.mongoseQuery
     !trips && next(new AppError('can not find type', 404))
     trips && res.send({ msg: 'success', page: apiFeaturee.pageNumber, trips })
 })
+
 const updateTrip = catchError(async (req, res, next) => {
     let trip = await tripModel.findOne({ _id: req.params.id, owner: req.user._id });
     if (!trip) {
