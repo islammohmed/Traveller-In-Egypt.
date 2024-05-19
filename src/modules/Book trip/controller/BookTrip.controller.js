@@ -37,7 +37,6 @@ const getSpcificReserved = catchError(async (req, res, next) => {
 })
 
 const createCheckOutSession = catchError(async (req, res, next) => {
-    console.log('ayy');
     let trip = await tripModel.findById(req.params.id)
     if(!trip) return next(new AppError('trip not founded',404))
     let user = await userModel.findById(req.user._id)
@@ -68,7 +67,6 @@ const createCheckOutSession = catchError(async (req, res, next) => {
 
 const reservePlace = (request, response) => {
     const sig = request.headers['stripe-signature'].toString();
-
     let event;
     event = stripe.webhooks.constructEvent(request.body, sig, "whsec_bPFV8r8Y4lisWmtrkhH68eREbidIsDjj");
     if (event.type == "checkout.session.completed") {
@@ -76,11 +74,8 @@ const reservePlace = (request, response) => {
         console.log("create Order here...");
     } else {
         console.log(`Unhandled event type ${event.type}`);
-
     }
-
 }
-
 export {
     tripDetails,
     getallReserves,
@@ -89,7 +84,6 @@ export {
     getReservedForUser,
     reservePlace
 }
-
 async function bookedTrip(e, res) {
     try {
         let trip = await tripModel.findById(e.client_reference_id);

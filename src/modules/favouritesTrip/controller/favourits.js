@@ -3,7 +3,7 @@ import { AppError } from '../../../utils/AppError.js'
 import { userModel } from '../../../../db/models/user.model.js'
 
 const addTofavourites = catchError(async (req, res, next) => {
-    const favourite = await userModel.findByIdAndUpdate(req.user._id, { $addToSet: { favTrips: req.body.trip } }, { new: true }).populate('favTrips')
+    const favourite = await userModel.findByIdAndUpdate(req.user._id, { $addToSet: { favTrips: req.body.trip } }, { new: true }).populate('favTrips','name -_id')
     !favourite && next(new AppError('No favourite', 404))
     favourite && res.send({ msg: 'success', favourite: favourite.favTrips })
 })
