@@ -1,3 +1,4 @@
+
 import { catchError } from "../../../middleware/catchError.js";
 import { tripModel } from "../../../../db/models/trip.model.js";
 import { Message } from "../../../../db/models/messageModel.js";
@@ -5,7 +6,7 @@ import { userModel } from "../../../../db/models/user.model.js";
 import { companyModel } from "../../../../db/models/company.model.js";
 import mongoose from "mongoose";
 const getAdminTripsAnalytics = catchError(async (req, res, next) => {
-    const { startYear, endYear } = req.body;
+    const { startYear, endYear } = req.query;
 
     const tripsStatusAnalytics = await tripModel.aggregate([
         {
@@ -29,14 +30,13 @@ const getAdminTripsAnalytics = catchError(async (req, res, next) => {
 
 
 const getCompanyTripsAnalytics = catchError(async (req, res, next) => {
-    const { startYear, endYear } = req.body;
-
-    const companyId = req.body.companyId;
+    const { startYear, endYear, companyId } = req.query;
 
     const agencyTripsAnalytics = await tripModel.aggregate([
         {
             $match:
-                { owner: { $in: [new mongoose.Types.ObjectId(companyId)] } ,
+            {
+                owner: { $in: [new mongoose.Types.ObjectId(companyId)] },
                 $expr:
                 {
                     $and:
