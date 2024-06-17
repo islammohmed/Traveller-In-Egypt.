@@ -98,8 +98,7 @@ const updateTrip = catchError(async (req, res, next) => {
 
 const deleteTrip = catchError(async (req, res, next) => {
     let owner = await tripModel.findOne({ _id: req.params.id, owner: req.user._id })
-
-    if (!owner) next(new AppError('you are not owner for this trip', 401))
+    if (!owner && req.user.role != 'admin') next(new AppError('you are not owner for this trip', 401))
     let trip = await tripModel.findByIdAndDelete(req.params.id)
     trip && res.send({ msg: 'success' })
 })
