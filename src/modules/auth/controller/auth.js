@@ -36,7 +36,7 @@ const signIn = catchError(async (req, res, next) => {
     let checkPassword = bcrypt.compareSync(password, checkEmail.password)
     if (!checkPassword) return next(new AppError('password incorrect', 401))
     let token = jwt.sign({ userId: checkEmail._id, role: checkEmail.role }, process.env.SECRET_KEY)
-    res.send({ msg: 'success', token })
+    res.send({ msg: 'success', token , checkEmail})
 })
 
 const changePassword = catchError(async (req, res, next) => {
